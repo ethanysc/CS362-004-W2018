@@ -647,10 +647,11 @@ int getCost(int cardNumber)
 /*** Assignment2: Refractored card functions ***/
 
 //Smithy, necessary parameters and int i counter
+//Bug: i <= 3 instead of i < 3
 int refactored_smithy(int currentPlayer, struct gameState *state, int handPos){
   //+3 Cards
   int i;
-  for (i = 0; i < 3; i++)
+  for (i = 0; i <= 3; i++)
   {
     drawCard(currentPlayer, state);
   }
@@ -660,13 +661,14 @@ int refactored_smithy(int currentPlayer, struct gameState *state, int handPos){
 }
 
 //Adventurer, necessary parameters
+//Bug: cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer-1]]
 int refactored_adventurer(int currentPlayer, struct gameState *state, int drawntreasure, int cardDrawn, int *temphand, int z){
   while(drawntreasure<2){
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(currentPlayer, state);
     }
     drawCard(currentPlayer, state);
-    cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+    cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]];//top card of hand is most recently drawn card.
     if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
       drawntreasure++;
     else {
@@ -683,12 +685,13 @@ int refactored_adventurer(int currentPlayer, struct gameState *state, int drawnt
 }
 
 //Village, necessary parameters
+//Bug: + 5 Actions instead of + 2
 int refactored_village(int currentPlayer, struct gameState *state, int handPos){
   //+1 Card
   drawCard(currentPlayer, state);
 			
   //+2 Actions
-  state->numActions = state->numActions + 2;
+  state->numActions = state->numActions + 5;
 			
   //discard played card from hand
   discardCard(handPos, currentPlayer, state, 0);
@@ -714,6 +717,7 @@ int refactored_salvager(int currentPlayer, struct gameState *state, int handPos,
 }
 
 //Minion, necessary parameters and int i, j counters
+//Bug: if ( state->handCount[i] > 0 ) instead of if ( state->handCount[i] > 4 )
 int refactored_minion(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2){
   int i, j;
   //+1 action
@@ -746,7 +750,7 @@ int refactored_minion(int currentPlayer, struct gameState *state, int handPos, i
 	{
 	  if (i != currentPlayer)
       {
-	    if ( state->handCount[i] > 4 )
+	    if ( state->handCount[i] > 0 )
 		{
 		  //discard hand
 		  while( state->handCount[i] > 0 )
