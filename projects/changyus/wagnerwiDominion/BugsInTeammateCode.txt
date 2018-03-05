@@ -1,0 +1,17 @@
+Bug #1:
+Card test 1 failed on cases 2 and 4 for refactored smithy card in William's
+dominion. The smithy_effect function in line 679 and following is not adding 3
+cards and discarding one card from hand pile. Also, the top card on discard pile
+is not smithy. Upon further examination of dominion.c.gcov, I found a bug in the
+for loop of the refactored function. In one single call of the refactored
+function, the loop was supposed to be executed 3 times, but a simple mistake from
+< to <= made the loop run only 2 times, creating an error in the number of cards 
+drawn for smithy card, and incorrect top card on the discard pile.
+
+Bug #2:
+Card test 2 failed on cases 2 and 4 for refactored village card in William's
+dominion. The village card is suppose to add 1 card, add 2 actions, and discard 
+1 card from the player's hand. However, William's village function fails to
+discard a card from the player's hand at the end. The failed test cases led me
+to examine the gcov file, and only 3 lines of code were ran within
+village_effect function, instead of the original 4 lines of code.

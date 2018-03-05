@@ -678,7 +678,8 @@ int treasure_map_effect(int currentPlayer, struct gameState *state, int handPos)
 
 int smithy_effect(int currentPlayer, struct gameState *state, int handPos)
 {
-	for (int i = 0; i <= 3; i++)
+	int i;
+	for (i = 0; i <= 3; i++)
 	{
 	  drawCard(currentPlayer, state);
 	}
